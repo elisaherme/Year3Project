@@ -17,10 +17,10 @@ void loop() {
   tempValue = analogRead(temp_sensor); //Process value from the sensor into actual temp
   Serial.println("Temp Value: " + tempValue)// Print to screen for testing but not for final product
   if (tempValue > 40){
-    turn heater OFF;
+    //turn heater OFF;
   }
   else{
-    turn heater ON;
+    //turn heater ON;
   }
   delay(1);
 }
