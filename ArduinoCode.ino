@@ -16,11 +16,11 @@ void loop() {
   Serial.println("Ethanol Value: " + ethanolValue);
   tempValue = analogRead(temp_sensor); //Process value from the sensor into actual temp
   Serial.println("Temp Value: " + tempValue); // Print temp to screen for testing but not for final product
-  if (tempValue > 40){
+  if (tempValue >= 40){
     digitalWrite(heat_element, LOW); //turn heater OFF;
   }
   else{
     digitalWrite(heat_element, HIGH); //turn heater ON;
   }
-  delay(1);
+  delay(1000); //It's in milliseconds
 }
