@@ -2,11 +2,11 @@ int ethanol_sensor = 1;
 int temp_sensor = 2;
 int heat_element = 3;
 
-float ethanolVoltage = 0;
-float tempVoltage = 0;
+float ethanolVoltage = 0.0;
+float tempVoltage = 0.0;
 
-float ethanolReading = 0;
-float tempReading = 0;
+float ethanolReading = 0.0;
+float tempReading = 0.0;
 
 float tempValue = 0.0;
 float ethanolValue = 0.0;
