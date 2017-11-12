@@ -1,6 +1,7 @@
 int ethanol_sensor = 1;
 int temp_sensor = 2;
 int heat_element = 3;
+int threshold = 40; //sweat prodcing threshold temperature
 
 float ethanolVoltage = 0.0;
 float tempVoltage = 0.0;
@@ -34,7 +35,7 @@ void loop() {
   //Centigrade temperature = [(analog voltage in mV) - 500] / 10
   Serial.println("Temp Value: " + tempValue); // Print temp to screen for testing but not for final product
 
-  if (tempValue >= 40){
+  if (tempValue >= threshold){
     digitalWrite(heat_element, LOW); //turn heater OFF;
   }
   else{
