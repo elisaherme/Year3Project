@@ -32,7 +32,7 @@ void loop() {
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 3.3V (= 3300mV) //??why is it not 5V??
   //tempVoltage = map(tempReading, 0, 1023, 0, 3300); //??do we change to 5000?? //Change values depending on the sensor
   //Process value from the sensor into actual temperature
-  //tempValue = temp formula (based on sensor) 
+  //tempValue = temp formula (based on sensor)
   //Centigrade temperature = [(analog voltage in mV) - 500] / 10
   Serial.println("Temp Value: " + tempValue); // Print temp to screen for testing but not for final product
 
