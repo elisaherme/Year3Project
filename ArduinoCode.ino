@@ -15,6 +15,7 @@ float ethanolValue = 0.0;
 void setup() {
   Serial.begin(9600); //put your setup code here, to run once:
   pinMode(heat_element, OUTPUT); //sets the digital pin of the heating element as an output
+  // ?do we need to define the input pins?
 }
 
 void loop() {
@@ -23,15 +24,15 @@ void loop() {
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   //ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   //Process value from the sensor into actual ethanol value
-  //ethanolValue =
+  //ethanolValue = //account for reduction in sensitivity due to heating element
   //Save value - send through Bluetooth
   Serial.println("Ethanol Value: " + ethanolValue);
 
   tempReading = analogRead(temp_sensor); //Process value from the sensor into actual temp
-  //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 3.3V (= 3300mV)
-  //tempVoltage = map(tempReading, 0, 1023, 0, 3300); //Change values depending on the sensor
+  //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 3.3V (= 3300mV) //??why is it not 5V??
+  //tempVoltage = map(tempReading, 0, 1023, 0, 3300); //??do we change to 5000?? //Change values depending on the sensor
   //Process value from the sensor into actual temperature
-  //tempValue =
+  //tempValue = temp formula (based on sensor) 
   //Centigrade temperature = [(analog voltage in mV) - 500] / 10
   Serial.println("Temp Value: " + tempValue); // Print temp to screen for testing but not for final product
 
