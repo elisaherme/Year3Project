@@ -15,7 +15,6 @@ float ethanolValue = 0.0;
 void setup() {
   Serial.begin(9600); //put your setup code here, to run once:
   pinMode(heat_element, OUTPUT); //sets the digital pin of the heating element as an output
-  // ?do we need to define the input pins?
 }
 
 void loop() {
