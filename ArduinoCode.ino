@@ -29,7 +29,7 @@ void loop() {
 
   tempReading = analogRead(temp_sensor); //Process value from the sensor into actual temp
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
-  tempVoltage = map(tempReading, 0, 1023, 0, 5000); //??do we change to 5000?? //Change values depending on the sensor
+  tempVoltage = map(tempReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   //Process value from the sensor into actual temperature
   //tempValue = temp formula (based on sensor)
   //Centigrade temperature = [(analog voltage in mV) - 500] / 10
