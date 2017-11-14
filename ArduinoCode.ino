@@ -1,3 +1,4 @@
+
 // First we include the libraries
 #include <OneWire.h> 
 #include <DallasTemperature.h>
@@ -56,3 +57,5 @@ void loop() {
 
   delay(1000); //It's in milliseconds
 }
+
+// http://www.figarosensor.com/products/2620pdf.pdf
