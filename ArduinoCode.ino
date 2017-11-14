@@ -15,14 +15,18 @@ DallasTemperature sensors(&oneWire);
 int ethanol_sensor = 1;
 int heat_element = 3;
 int threshold = 40; //sweat prodcing threshold temperature
+float loadResistance = 1.5; //Put in value of pull down resistance
+float controlResistance = 1.5; //Put in value of standar resistance of the sensor at 300ppm, refer to the datasheet
+// http://www.figarosensor.com/products/2620pdf.pdf
 
 float ethanolVoltage = 0.0;
+float sensorResistance = 0.0;
 
 float ethanolReading = 0.0;
 float tempReading = 0.0;
 
 float tempValue = 0.0;
-float ethanolValue = 0.0;
+float ethanolValue = 0.0; //measured in ppm
 
 void setup() {
   Serial.begin(9600); //put your setup code here, to run once:
@@ -36,9 +40,11 @@ void loop() {
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   //Process value from the sensor into actual ethanol value
-  //ethanolValue = //account for reduction in sensitivity due to heating element
+  sensorResistance = ((5000-ethanolVoltage)/ethanolVoltage)*loadResistance;
+  ethanolValue = (sensorResistance/controlResistance)*300;
   //Save value - send through Bluetooth
   Serial.println("Ethanol Value: " + ethanolValue);
+  
 
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
