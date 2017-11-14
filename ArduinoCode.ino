@@ -1,4 +1,5 @@
 
+
 // First we include the libraries
 #include <OneWire.h> 
 #include <DallasTemperature.h>
@@ -42,6 +43,7 @@ void loop() {
   //Process value from the sensor into actual ethanol value
   sensorResistance = ((5000-ethanolVoltage)/ethanolVoltage)*loadResistance;
   ethanolValue = (sensorResistance/controlResistance)*300;
+  // need to calibrate the ethanol value to get the control resistance
   //Save value - send through Bluetooth
   Serial.println("Ethanol Value: " + ethanolValue);
   
