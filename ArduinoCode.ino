@@ -22,6 +22,7 @@ float controlResistance = 1.5; //Put in value of standar resistance of the senso
 
 float ethanolVoltage = 0.0;
 float sensorResistance = 0.0;
+float ethanolConcentration = 0.0;
 
 float ethanolReading = 0.0;
 float tempReading = 0.0;
@@ -42,7 +43,8 @@ void loop() {
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   //Process value from the sensor into actual ethanol value
   sensorResistance = ((5000-ethanolVoltage)/ethanolVoltage)*loadResistance;
-  ethanolValue = (sensorResistance/controlResistance)*300;
+  ethanolConcentration = (sensorResistance/controlResistance)*300;
+  ethanolValue = ethanolConcentration*100; //From ppm to BAC
   // need to calibrate the ethanol value to get the control resistance
   //Save value - send through Bluetooth
   Serial.println("Ethanol Value: " + ethanolValue);
