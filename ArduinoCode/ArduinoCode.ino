@@ -47,8 +47,9 @@ void loop() {
   ethanolValue = ethanolConcentration*100; //From ppm to BAC
   // need to calibrate the ethanol value to get the control resistance
   //Save value - send through Bluetooth
-  Serial.println("Ethanol Value: " + ethanolValue);
-  
+  Serial.println("Ethanol Value: ");
+  Serial.println(ethanolValue);
+  Serial.println("/n");
 
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
@@ -56,8 +57,10 @@ void loop() {
    // You can have more than one DS18B20 on the same bus.  
    // 0 refers to the first IC on the wire 
   
-  Serial.println("Temp Value: " + tempValue); // Print temp to screen for testing but not for final product
-
+  Serial.println("Temp Value: "); // Print temp to screen for testing but not for final product
+  Serial.println(tempValue);
+  Serial.println("/n");
+  
   if (tempValue >= threshold){
     digitalWrite(heat_element, LOW); //turn heater OFF;
   }
