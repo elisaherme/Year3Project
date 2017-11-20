@@ -13,7 +13,7 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature. 
 DallasTemperature sensors(&oneWire);
 
-int ethanol_sensor = 1;
+int ethanol_sensor = A0;
 int heat_element = 3;
 int threshold = 40; //sweat prodcing threshold temperature
 float loadResistance = 1.5; //Put in value of pull down resistance
