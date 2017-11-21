@@ -16,7 +16,7 @@ DallasTemperature sensors(&oneWire);
 int ethanol_sensor = A0;
 int heat_element = 3;
 int threshold = 40; //sweat prodcing threshold temperature
-float loadResistance = 1.5; //Put in value of pull down resistance
+float loadResistance = 2200; //Put in value of pull down resistance
 float controlResistance = 1.5; //Put in value of standar resistance of the sensor at 300ppm, refer to the datasheet
 // http://www.figarosensor.com/products/2620pdf.pdf
 
@@ -41,8 +41,9 @@ void loop() {
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
-  //Process value from the sensor into actual ethanol value
-  sensorResistance = ((5000-ethanolVoltage)/ethanolVoltage)*loadResistance;
+  //Process value from the sensor into actual ethanol value 
+  //5V (Voltage divider)
+  sensorResistance = ((5-ethanolVoltage)/ethanolVoltage)*loadResistance;
   ethanolConcentration = (sensorResistance/controlResistance)*300;
   ethanolValue = ethanolConcentration*100; //From ppm to BAC
   // need to calibrate the ethanol value to get the control resistance
