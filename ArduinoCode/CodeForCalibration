@@ -49,12 +49,12 @@ void loop() {
     ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
     //Process value from the sensor into actual ethanol value 
     //5V (Voltage divider)
-    sensorResistance = ((5-ethanolVoltage)/ethanolVoltage)*loadResistance;
-    ethanolConcentration = (sensorResistance/controlResistance)*300;
-    ethanolValue = ethanolConcentration*100; //From ppm to BAC
+    //sensorResistance = ((5-ethanolVoltage)/ethanolVoltage)*loadResistance;
+    //ethanolConcentration = (sensorResistance/controlResistance)*300;
+    //ethanolValue = ethanolConcentration*100; //From ppm to BAC
     // need to calibrate the ethanol value to get the control resistance
     //Save value - send through Bluetooth
-    Serial.print(ethanolValue);
+    Serial.print(ethanolVoltage);
     Serial.print("\t\t");
     EthanolConcWithTime[timeInSeconds] = ethanolValue;
   
