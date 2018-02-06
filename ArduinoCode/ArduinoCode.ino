@@ -38,7 +38,6 @@ void loop() {
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
-  //Process value from the sensor into actual ethanol value
   
   //In percentage
   ethanolValue = 10^((ethanolVoltage - 3993)/245.9); //Sensor 1
@@ -63,7 +62,5 @@ void loop() {
     digitalWrite(heat_element, HIGH); //turn heater ON;
   }
 
-  delay(1000); //It's in milliseconds
+  delay(10000); //It's in milliseconds
 }
-
-// http://www.figarosensor.com/products/2620pdf.pdf
