@@ -23,7 +23,7 @@ float ethanolReading = 0.0;
 float tempReading = 0.0;
 
 float tempValue = 0.0;
-float ethanolValue = 0.0; //measured in ppm
+double ethanolValue = 0.0; //measured in ppm
 
 void setup() {
   Serial.begin(9600); //put your setup code here, to run once:
@@ -38,7 +38,7 @@ void loop() {
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
 
   //In percentage
-  ethanolValue = 10^((ethanolVoltage - 3993)/245.9); //Sensor 1
+  ethanolValue = pow(10,(ethanolVoltage - 3993)/245.9); //Sensor 1
   Serial.println("Ethanol Value: ");
   Serial.println(ethanolValue);
   Serial.println("/n");
