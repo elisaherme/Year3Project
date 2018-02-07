@@ -40,7 +40,6 @@ void loop() {
 
   //In percentage
   ethanolValue = 10^((ethanolVoltage - 3993)/245.9); //Sensor 1
-  Serial.print(ethanolValue);
   Serial.print("|");
   Serial.printIn();
 
