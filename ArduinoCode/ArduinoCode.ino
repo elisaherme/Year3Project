@@ -32,7 +32,6 @@ void setup() {
 }
 
 void loop() {
-
   //analogRead returns value 0-1023 where the input voltage is 0-5V
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
@@ -54,15 +53,11 @@ void loop() {
   Serial.println(tempValue);
   Serial.println("/n");
 
-
-  if (tempValue <= 32){
-    analogWrite(heat_element, 255); //turn heater ON with no pulse so it heats fast
-  }
-  else if (tempValue >= threshold){
+  if (tempValue >= threshold){
     digitalWrite(heat_element, LOW); //turn heater OFF;
   }
   else{
-    analogWrite(heat_element, 51); //turn heater ON with pulse modulation of T/4
+    digitalWrite(heat_element, HIGH); //turn heater ON
   }
 
   delay(10000); //It's in milliseconds
