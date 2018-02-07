@@ -32,6 +32,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.print("#");
   //analogRead returns value 0-1023 where the input voltage is 0-5V
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
@@ -39,19 +40,14 @@ void loop() {
 
   //In percentage
   ethanolValue = 10^((ethanolVoltage - 3993)/245.9); //Sensor 1
-  Serial.println("Ethanol Value: ");
-  Serial.println(ethanolValue);
-  Serial.println("/n");
+  Serial.print(ethanolValue);
+  Serial.println("|");
 
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
   tempValue = sensors.getTempCByIndex(0);// Why "byIndex"?
    // You can have more than one DS18B20 on the same bus.
    // 0 refers to the first IC on the wire
-
-  Serial.println("Temp Value: "); // Print temp to screen for testing but not for final product
-  Serial.println(tempValue);
-  Serial.println("/n");
 
   if (tempValue >= threshold){
     digitalWrite(heat_element, LOW); //turn heater OFF;
