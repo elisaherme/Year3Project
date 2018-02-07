@@ -41,7 +41,6 @@ void loop() {
   //In percentage
   ethanolValue = pow(10,(ethanolVoltage - 3993)/245.9); //Sensor 1
   Serial.print("|");
-  Serial.printIn();
 
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
