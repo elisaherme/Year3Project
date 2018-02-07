@@ -62,7 +62,7 @@ void loop() {
     digitalWrite(heat_element, LOW); //turn heater OFF;
   }
   else{
-    analogWrite(heat_element, 51); //turn heater ON;
+    analogWrite(heat_element, 51); //turn heater ON with pulse modulation of T/4
   }
 
   delay(10000); //It's in milliseconds
