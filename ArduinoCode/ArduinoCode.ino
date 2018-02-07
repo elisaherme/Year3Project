@@ -1,5 +1,3 @@
-
-
 // First we include the libraries
 #include <OneWire.h>
 #include <DallasTemperature.h>
