@@ -1,6 +1,7 @@
 // First we include the libraries
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <PID_v1.h>
 
 // Data wire is plugged into pin 2 on the Arduino
 #define ONE_WIRE_BUS 2
@@ -11,9 +12,13 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature.
 DallasTemperature sensors(&oneWire);
 
+double threshold, tempValue, Output;
+
+//Specify the links and initial tuning parameters
+PID myPID(&tempValue, &Output, &threshold, 2, 5, 1, DIRECT);
+
 int ethanol_sensor = A0;
 int heat_element = 3;
-int threshold = 40; //sweat prodcing threshold temperature
 // http://www.figarosensor.com/products/2620pdf.pdf
 
 float ethanolVoltage = 0.0;
@@ -22,13 +27,19 @@ float sensorResistance = 0.0;
 float ethanolReading = 4.0;
 float tempReading = 0.0;
 
-float tempValue = 0.0;
 double ethanolValue = 3.0; //measured in ppm
 
 void setup() {
   Serial.begin(115200); //put your setup code here, to run once:
   pinMode(heat_element, OUTPUT); //sets the digital pin of the heating element as an output
   sensors.begin();
+
+  //initialize the variables we're linked to
+    Input = analogRead(0);
+    Setpoint = 100;
+
+    //turn the PID on
+    myPID.SetMode(AUTOMATIC);
 }
 
 void loop() {
@@ -51,12 +62,9 @@ void loop() {
    // 0 refers to the first IC on the wire
   Serial.println(tempValue);
 
-  if (tempValue >= threshold){
-    digitalWrite(heat_element, LOW); //turn heater OFF
-  }
-  else{
-    digitalWrite(heat_element, HIGH); //turn heater ON
-  }
+  Input = analogRead(0);
+  myPID.Compute();
+  analogWrite(3,Output);
 
   delay(3000); //It's in milliseconds
 }
