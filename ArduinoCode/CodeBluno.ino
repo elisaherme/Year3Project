@@ -32,7 +32,7 @@ void setup() {
 }
 
 void loop() {
-  
+
   //analogRead returns value 0-1023 where the input voltage is 0-5V
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
@@ -42,7 +42,7 @@ void loop() {
   //In percentage
   ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
   Serial.println(ethanolValue);
-  
+
   Serial.print("temp = ");
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
@@ -52,7 +52,7 @@ void loop() {
   Serial.println(tempValue);
 
   if (tempValue >= threshold){
-    digitalWrite(heat_element, LOW); //turn heater OFF;
+    digitalWrite(heat_element, LOW); //turn heater OFF
   }
   else{
     digitalWrite(heat_element, HIGH); //turn heater ON
