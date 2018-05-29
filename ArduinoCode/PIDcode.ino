@@ -12,8 +12,10 @@ OneWire oneWire(ONE_WIRE_BUS);
 // Pass our oneWire reference to Dallas Temperature.
 DallasTemperature sensors(&oneWire);
 
-double threshold = 0;
-double tempValue, Output;
+double threshold, tempValue, Output;
+//Define the aggressive and conservative Tuning Parameters
+double aggKp=4, aggKi=0.2, aggKd=1;
+double consKp=1, consKi=0.05, consKd=0.25;
 
 //Specify the links and initial tuning parameters
 PID myPID(&tempValue, &Output, &threshold, 2, 5, 1, DIRECT);
@@ -54,6 +56,17 @@ void loop() {
    // You can have more than one DS18B20 on the same bus.
    // 0 refers to the first IC on the wire
   Serial.println(tempValue);
+
+  double gap = abs(threshold-tempValue); //distance away from setpoint
+  if(gap<5)
+  {  //we're close to setpoint, use conservative tuning parameters
+    myPID.SetTunings(consKp, consKi, consKd);
+  }
+  else
+  {
+     //we're far from setpoint, use aggressive tuning parameters
+     myPID.SetTunings(aggKp, aggKi, aggKd);
+  }
 
   myPID.Compute();
   analogWrite(3,Output);
