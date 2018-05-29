@@ -18,8 +18,9 @@ double aggKp=4, aggKi=0.2, aggKd=1;
 double consKp=1, consKi=0.05, consKd=0.25;
 
 //Specify the links and initial tuning parameters
-PID myPID(&tempValue, &Output, &threshold, 2, 5, 1, DIRECT);
+PID myPID(&tempValue, &Output, &threshold, consKp, consKi, consKd, DIRECT);
 
+int heat_element = 3;
 int ethanol_sensor = A0;
 float ethanolVoltage = 0.0;
 float ethanolReading = 4.0;
@@ -31,10 +32,10 @@ void setup() {
   sensors.begin();
 
   //initialize the variables we're linked to
-    threshold = 40;
+  threshold = 40;
 
-    //turn the PID on
-    myPID.SetMode(AUTOMATIC);
+  //turn the PID on
+  myPID.SetMode(AUTOMATIC);
 }
 
 void loop() {
@@ -69,7 +70,5 @@ void loop() {
   }
 
   myPID.Compute();
-  analogWrite(3,Output);
-
-  delay(3000); //It's in milliseconds
+  analogWrite(heat_element,Output);
 }
