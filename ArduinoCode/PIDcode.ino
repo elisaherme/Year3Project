@@ -22,6 +22,9 @@ double consKp=1, consKi=0.05, consKd=0.25;
 PID myPID(&tempValue, &Output, &threshold, consKp, consKi, consKd, DIRECT);
 PID_ATune aTune(&tempValue, &Output);
 
+int val = 0;
+int is_tuning = 1;
+
 int heat_element = 3;
 int ethanol_sensor = A0;
 float ethanolVoltage = 0.0;
@@ -60,14 +63,26 @@ void loop() {
    // 0 refers to the first IC on the wire
   Serial.println(tempValue);
 
-  consKp = aTune.GetKp();
-  consKi = aTune.GetKi();
-  consKd = aTune.GetKd();
-
+  if (is_tuning){                                                             // Check whether tunner is turned on                                                      // TUNE
+    val = 0;
+    val = (aTune.Runtime());                                                // Run the Auto tunner and check whether it is finished the tuning
+    if(val != 0){                                                             // If tuning is done
+      is_tuning = 0;                                                          // Turn off the tunner
+      consKp = aTune.GetKp();
+      consKi = aTune.GetKi();
+      consKd = aTune.GetKd();
+      myPID.SetTunings(consKp, consKi, consKd);                       // Set the tunned constants to the PID
+      PID.SetMode(AUTOMATIC);
+    }
+  }
+  else{
+    PID.Compute();
+    analogWrite(heat_element,Output);
+  }
   //double gap = abs(threshold-tempValue); //distance away from setpoint
   //if(gap<5)
   //{  //we're close to setpoint, use conservative tuning parameters
-  myPID.SetTunings(consKp, consKi, consKd);
+  //myPID.SetTunings(consKp, consKi, consKd);
   //}
   //else
   //{
@@ -75,6 +90,6 @@ void loop() {
      //myPID.SetTunings(aggKp, aggKi, aggKd);
   //}
 
-  myPID.Compute();
-  analogWrite(heat_element,Output);
+  //myPID.Compute();
+  //analogWrite(heat_element,Output);
 }
