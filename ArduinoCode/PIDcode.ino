@@ -2,6 +2,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <PID_v1.h>
+#include <PID_AutoTune_v0.h>
 
 // Data wire is plugged into pin 2 on the Arduino
 #define ONE_WIRE_BUS 2
@@ -19,6 +20,7 @@ double consKp=1, consKi=0.05, consKd=0.25;
 
 //Specify the links and initial tuning parameters
 PID myPID(&tempValue, &Output, &threshold, consKp, consKi, consKd, DIRECT);
+PID_ATune aTune(&tempValue, &Output);
 
 int heat_element = 3;
 int ethanol_sensor = A0;
@@ -58,16 +60,20 @@ void loop() {
    // 0 refers to the first IC on the wire
   Serial.println(tempValue);
 
-  double gap = abs(threshold-tempValue); //distance away from setpoint
-  if(gap<5)
-  {  //we're close to setpoint, use conservative tuning parameters
-    myPID.SetTunings(consKp, consKi, consKd);
-  }
-  else
-  {
+  consKp = aTune.GetKp();
+  consKi = aTune.GetKi();
+  consKd = aTune.GetKd();
+
+  //double gap = abs(threshold-tempValue); //distance away from setpoint
+  //if(gap<5)
+  //{  //we're close to setpoint, use conservative tuning parameters
+  myPID.SetTunings(consKp, consKi, consKd);
+  //}
+  //else
+  //{
      //we're far from setpoint, use aggressive tuning parameters
-     myPID.SetTunings(aggKp, aggKi, aggKd);
-  }
+     //myPID.SetTunings(aggKp, aggKi, aggKd);
+  //}
 
   myPID.Compute();
   analogWrite(heat_element,Output);
