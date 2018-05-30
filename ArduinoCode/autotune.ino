@@ -114,7 +114,7 @@ void loop()
   }
   else
   {
-     analogWrite(0,output);
+     analogWrite(heat_element,output);
   }
 
   //send-receive with processing if it's time
