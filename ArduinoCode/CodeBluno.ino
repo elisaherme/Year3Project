@@ -58,5 +58,11 @@ void loop() {
     digitalWrite(heat_element, HIGH); //turn heater ON
   }
 
-  delay(3000); //It's in milliseconds
+  double gap = abs(threshold-tempValue); //distance away from setpoint
+  if(gap<1){  //we're close to setpoint, use conservative tuning parameters
+    delay(500); //It's in milliseconds
+  }
+  else{
+    delay(3000); //It's in milliseconds
+  }
 }

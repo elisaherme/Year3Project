@@ -114,6 +114,7 @@ void loop()
   }
   else
   {
+    Serial.println("INSIDE");
      analogWrite(heat_element,output);
   }
 
