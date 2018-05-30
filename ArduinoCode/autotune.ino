@@ -1,8 +1,20 @@
 #include <PID_v1.h>
 #include <PID_AutoTune_v0.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#define ONE_WIRE_BUS 2
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+int heat_element = 3;
+int ethanol_sensor = A0;
+float ethanolVoltage = 0.0;
+float ethanolReading = 4.0;
+double ethanolValue = 3.0; //measured in ppm
 
 byte ATuneModeRemember=2;
-double input=80, output=50, setpoint=180;
+double input, output, setpoint=34;
 double kp=2,ki=0.5,kd=2;
 
 double kpmodel=1.5, taup=100, theta[50];
@@ -29,7 +41,7 @@ void setup()
     }
     modelTime = 0;
   }
-  //Setup the pid 
+  //Setup the pid
   myPID.SetMode(AUTOMATIC);
 
   if(tuning)
@@ -38,14 +50,33 @@ void setup()
     changeAutoTune();
     tuning=true;
   }
-  
+
   serialTime = 0;
-  Serial.begin(9600);
+  Serial.begin(115200);
+  pinMode(heat_element, OUTPUT); //sets the digital pin of the heating element as an output
+  sensors.begin();
 
 }
 
 void loop()
 {
+  //analogRead returns value 0-1023 where the input voltage is 0-5V
+  ethanolReading = analogRead(ethanol_sensor);
+  //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
+  ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
+
+  Serial.print("ethanol value = ");
+  //In percentage
+  ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
+  Serial.println(ethanolValue);
+
+  Serial.print("temp = ");
+  sensors.requestTemperatures(); // Send the command to get temperature readings
+  //Put temperate sensor into digital pin 2
+  input = sensors.getTempCByIndex(0);// Why "byIndex"?
+   // You can have more than one DS18B20 on the same bus.
+   // 0 refers to the first IC on the wire
+  Serial.println(input);
 
   unsigned long now = millis();
 
@@ -53,7 +84,7 @@ void loop()
   { //pull the input in from the real world
     input = analogRead(0);
   }
-  
+
   if(tuning)
   {
     byte val = (aTune.Runtime());
@@ -71,21 +102,21 @@ void loop()
     }
   }
   else myPID.Compute();
-  
+
   if(useSimulation)
   {
     theta[30]=output;
     if(now>=modelTime)
     {
-      modelTime +=100; 
+      modelTime +=100;
       DoModel();
     }
   }
   else
   {
-     analogWrite(0,output); 
+     analogWrite(0,output);
   }
-  
+
   //send-receive with processing if it's time
   if(millis()>serialTime)
   {
@@ -142,8 +173,8 @@ void SerialReceive()
 {
   if(Serial.available())
   {
-   char b = Serial.read(); 
-   Serial.flush(); 
+   char b = Serial.read();
+   Serial.flush();
    if((b=='1' && !tuning) || (b!='1' && tuning))changeAutoTune();
   }
 }
