@@ -13,7 +13,7 @@ DallasTemperature sensors(&oneWire);
 
 int ethanol_sensor = A0;
 int heat_element = 3;
-int threshold = 40; //sweat prodcing threshold temperature
+int threshold = 39; //sweat prodcing threshold temperature
 // http://www.figarosensor.com/products/2620pdf.pdf
 
 float ethanolVoltage = 0.0;
@@ -41,7 +41,7 @@ void loop() {
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
 
-  if(count % 20 == 0){
+  if(count % 120 == 0){
     Serial.print("ethanol value = ");
     Serial.println(ethanolValue);
   }
