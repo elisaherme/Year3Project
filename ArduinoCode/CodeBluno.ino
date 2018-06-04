@@ -23,7 +23,8 @@ float ethanolReading = 4.0;
 float tempReading = 0.0;
 
 float tempValue = 0.0;
-double ethanolValue = 3.0; //measured in ppm
+double ethanolValue = 0; //measured in ppm
+double ethanolPercent = 0; //%
 
 int count = 1;
 
@@ -40,6 +41,7 @@ void loop() {
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
   ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
+  ethanolPercent = ethanolValue/10000;
   
   sensors.requestTemperatures(); // Send the command to get temperature readings
   //Put temperate sensor into digital pin 2
@@ -47,11 +49,13 @@ void loop() {
    // You can have more than one DS18B20 on the same bus.
    // 0 refers to the first IC on the wire
   
-  if(count % 120 == 0){
+  if(count % 60 == 0){
     Serial.print("ethanol value = ");
     Serial.println(ethanolValue);
     Serial.print("temp = ");
-    Serial.println(tempValue);
+   Serial.println(tempValue);
+   Serial.print("ethanol percentage = ");
+    Serial.println(ethanolPercent);
   }
 
   if (tempValue >= threshold){
