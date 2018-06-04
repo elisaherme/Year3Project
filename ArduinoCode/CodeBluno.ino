@@ -25,6 +25,8 @@ float tempReading = 0.0;
 float tempValue = 0.0;
 double ethanolValue = 3.0; //measured in ppm
 
+int count = 0;
+
 void setup() {
   Serial.begin(115200); //put your setup code here, to run once:
   pinMode(heat_element, OUTPUT); //sets the digital pin of the heating element as an output
@@ -37,11 +39,12 @@ void loop() {
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
-
-  Serial.print("ethanol value = ");
-  //In percentage
   ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
-  Serial.println(ethanolValue);
+
+  if(count % 20 == 0){
+    Serial.print("ethanol value = ");
+    Serial.println(ethanolValue);
+  }
 
   Serial.print("temp = ");
   sensors.requestTemperatures(); // Send the command to get temperature readings
@@ -61,8 +64,10 @@ void loop() {
   double gap = abs(threshold-tempValue); //distance away from setpoint
   if(gap<1){  //we're close to setpoint, use conservative tuning parameters
     delay(500); //It's in milliseconds
+    count++;
   }
   else{
     delay(3000); //It's in milliseconds
   }
+
 }
