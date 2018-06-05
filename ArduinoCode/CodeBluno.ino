@@ -40,7 +40,7 @@ void loop() {
   ethanolReading = analogRead(ethanol_sensor);
   //analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   ethanolVoltage = map(ethanolReading, 0, 1023, 0, 5000); //Change values depending on the sensor
-  ethanolValue = pow(10,(ethanolVoltage - 3578.9)/328.0); //Sensor 2
+  ethanolValue = pow(10,(ethanolVoltage - 3740)/1891); //Sensor 3
   ethanolPercent = ethanolValue/10000;
   
   sensors.requestTemperatures(); // Send the command to get temperature readings
